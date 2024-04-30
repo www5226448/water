@@ -1,0 +1,120 @@
+warning: unused import: `InvokeTransactionResult`
+ --> src/graph.rs:4:43
+  |
+4 | use starknet::core::types::{FieldElement, InvokeTransactionResult};
+  |                                           ^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` on by default
+
+warning: unused import: `warn`
+ --> src/graph.rs:9:17
+  |
+9 | use log::{info, warn};
+  |                 ^^^^
+
+warning: unused import: `starknet::accounts::Call`
+ --> src/types.rs:2:5
+  |
+2 | use starknet::accounts::Call;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: variant `wstETH` should have an upper camel case name
+  --> src/types.rs:13:5
+   |
+13 |     wstETH,
+   |     ^^^^^^ help: convert the identifier to upper camel case: `WstEth`
+   |
+   = note: `#[warn(non_camel_case_types)]` on by default
+
+warning: variant `jedipair` should have an upper camel case name
+  --> src/types.rs:57:5
+   |
+57 |     jedipair,
+   |     ^^^^^^^^ help: convert the identifier to upper camel case: `Jedipair`
+
+warning: variant `onepair` should have an upper camel case name
+  --> src/types.rs:58:5
+   |
+58 |     onepair,
+   |     ^^^^^^^ help: convert the identifier to upper camel case (notice the capitalization): `Onepair`
+
+warning: variant `myPoolId` should have an upper camel case name
+  --> src/types.rs:59:5
+   |
+59 |     myPoolId,
+   |     ^^^^^^^^ help: convert the identifier to upper camel case: `MyPoolId`
+
+warning: variable `privateKey` should have a snake case name
+  --> src/types.rs:87:9
+   |
+87 |     let privateKey = line.next().expect("Failed to compile private key");
+   |         ^^^^^^^^^^ help: convert the identifier to snake case: `private_key`
+   |
+   = note: `#[warn(non_snake_case)]` on by default
+
+warning: variable `amountIn` should have a snake case name
+  --> src/utils.rs:20:5
+   |
+20 |     amountIn: &FieldElement,
+   |     ^^^^^^^^ help: convert the identifier to snake case: `amount_in`
+
+warning: variable `amountInWithFee` should have a snake case name
+  --> src/utils.rs:22:9
+   |
+22 |     let amountInWithFee = *amountIn * felt!("997"); // amountInWithFee = amountIn.mul(997);
+   |         ^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `amount_in_with_fee`
+
+warning: variable `amountOut` should have a snake case name
+  --> src/utils.rs:27:9
+   |
+27 |     let amountOut = numerator.floor_div(denominator);
+   |         ^^^^^^^^^ help: convert the identifier to snake case: `amount_out`
+
+warning: function `uniswapv2_getAmountOut` should have a snake case name
+  --> src/utils.rs:32:8
+   |
+32 | pub fn uniswapv2_getAmountOut(
+   |        ^^^^^^^^^^^^^^^^^^^^^^ help: convert the identifier to snake case: `uniswapv2_get_amount_out`
+
+warning: variable `amountIn` should have a snake case name
+  --> src/utils.rs:37:5
+   |
+37 |     amountIn: &FieldElement,
+   |     ^^^^^^^^ help: convert the identifier to snake case: `amount_in`
+
+warning: variable `tokenIn` should have a snake case name
+  --> src/utils.rs:38:5
+   |
+38 |     tokenIn: &Token,
+   |     ^^^^^^^ help: convert the identifier to snake case: `token_in`
+
+warning: `water` (bin "water") generated 14 warnings (run `cargo fix --bin "water"` to apply 3 suggestions)
+    Finished release [optimized] target(s) in 0.30s
+     Running `/Users/matrix/Documents/notebooks/water/target/release/water`
+timestamp 1714441849, nonce updated FieldElement { inner: 0x0000000000000000000000000000000000000000000000000000000000000011 }
+timestamp 1714442151, nonce updated FieldElement { inner: 0x0000000000000000000000000000000000000000000000000000000000000011 }
+timestamp 1714442470, nonce updated FieldElement { inner: 0x0000000000000000000000000000000000000000000000000000000000000011 }
+timestamp 1714442771, nonce updated FieldElement { inner: 0x0000000000000000000000000000000000000000000000000000000000000011 }
+timestamp 1714443075, nonce updated FieldElement { inner: 0x0000000000000000000000000000000000000000000000000000000000000011 }
+timestamp 1714443377, nonce updated FieldElement { inner: 0x0000000000000000000000000000000000000000000000000000000000000011 }
+timestamp 1714443691, nonce updated FieldElement { inner: 0x0000000000000000000000000000000000000000000000000000000000000011 }
+timestamp 1714443994, nonce updated FieldElement { inner: 0x0000000000000000000000000000000000000000000000000000000000000011 }
+timestamp 1714444297, nonce updated FieldElement { inner: 0x0000000000000000000000000000000000000000000000000000000000000011 }
+timestamp 1714444601, nonce updated FieldElement { inner: 0x0000000000000000000000000000000000000000000000000000000000000011 }
+timestamp 1714444904, nonce updated FieldElement { inner: 0x0000000000000000000000000000000000000000000000000000000000000011 }
+timestamp 1714445206, nonce updated FieldElement { inner: 0x0000000000000000000000000000000000000000000000000000000000000011 }
+timestamp 1714445509, nonce updated FieldElement { inner: 0x0000000000000000000000000000000000000000000000000000000000000011 }
+timestamp 1714445812, nonce updated FieldElement { inner: 0x0000000000000000000000000000000000000000000000000000000000000011 }
+timestamp 1714446114, nonce updated FieldElement { inner: 0x0000000000000000000000000000000000000000000000000000000000000011 }
+timestamp 1714446417, nonce updated FieldElement { inner: 0x0000000000000000000000000000000000000000000000000000000000000011 }
+timestamp 1714446719, nonce updated FieldElement { inner: 0x0000000000000000000000000000000000000000000000000000000000000011 }
+timestamp 1714447020, nonce updated FieldElement { inner: 0x0000000000000000000000000000000000000000000000000000000000000011 }
+timestamp 1714447323, nonce updated FieldElement { inner: 0x0000000000000000000000000000000000000000000000000000000000000011 }
+timestamp 1714447634, nonce updated FieldElement { inner: 0x0000000000000000000000000000000000000000000000000000000000000011 }
+timestamp 1714447938, nonce updated FieldElement { inner: 0x0000000000000000000000000000000000000000000000000000000000000011 }
+timestamp 1714448239, nonce updated FieldElement { inner: 0x0000000000000000000000000000000000000000000000000000000000000011 }
+timestamp 1714448542, nonce updated FieldElement { inner: 0x0000000000000000000000000000000000000000000000000000000000000011 }
+timestamp 1714448844, nonce updated FieldElement { inner: 0x0000000000000000000000000000000000000000000000000000000000000011 }
+timestamp 1714449147, nonce updated FieldElement { inner: 0x0000000000000000000000000000000000000000000000000000000000000011 }
+timestamp 1714449451, nonce updated FieldElement { inner: 0x0000000000000000000000000000000000000000000000000000000000000011 }
+timestamp 1714449753, nonce updated FieldElement { inner: 0x0000000000000000000000000000000000000000000000000000000000000011 }
