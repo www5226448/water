@@ -1,5 +1,4 @@
 use serde::{Deserialize, Serialize};
-use starknet::accounts::Call;
 use starknet::core::types::FieldElement;
 use std::fs;
 
@@ -107,3 +106,25 @@ pub fn create_account() -> MyAccount {
     );
     account
 }
+
+use once_cell::sync::Lazy;
+use std::sync::Arc;
+
+pub struct Fetcher(pub JsonRpcClient<HttpTransport>);
+
+impl Fetcher {
+    pub fn new() -> Self {
+        let provider = JsonRpcClient::new(HttpTransport::new(
+            Url::parse("https://starknet-mainnet.public.blastapi.io/rpc/v0_7").unwrap(),
+        ));
+        Fetcher(provider)
+    }
+
+    pub fn provider(&self) -> &JsonRpcClient<HttpTransport> {
+        &self.0
+    }
+}
+
+pub static FETCHER: Lazy<Arc<Fetcher>> = Lazy::new(|| Arc::new(Fetcher::new()));
+
+pub type Searcher = Arc<Fetcher>;

@@ -2,7 +2,7 @@ use std::{collections::HashMap, fs};
 
 use starknet::{
     accounts::Call,
-    core::types::{BlockId, BlockTag, FieldElement, FunctionCall},
+    core::types::{self, BlockId, BlockTag, FieldElement, FunctionCall},
     macros::{felt, selector},
     providers::{
         jsonrpc::{HttpTransport, JsonRpcClient},
@@ -98,18 +98,16 @@ pub fn compile_states<'a>(
     dex_data
 }
 
-pub async fn retrieve() -> Vec<FieldElement> {
+pub async fn retrieve(searcher: &Searcher) -> Vec<FieldElement> {
     let multicall_address =
         felt!("0x05754af3760f3356da99aea5c3ec39ccac7783d925a19666ebbeca58ff0087f4");
 
     let raw_calls = compile_multicall_parameters();
 
     loop {
-        let provider = JsonRpcClient::new(HttpTransport::new(
-            Url::parse("https://starknet-mainnet.public.blastapi.io/rpc/v0_7").unwrap(),
-        ));
         let raw_call_vectors = encode_calls(&raw_calls);
-        let r = provider
+        let r = searcher
+            .0
             .call(
                 FunctionCall {
                     contract_address: multicall_address,
@@ -133,25 +131,24 @@ pub async fn retrieve() -> Vec<FieldElement> {
 }
 
 pub async fn update_nonce(
+    searcher: &Searcher,
     address: FieldElement,
     nonce: FieldElement,
     update_index: u64,
 ) -> (u64, FieldElement) {
-    let provider = JsonRpcClient::new(HttpTransport::new(
-        Url::parse("https://starknet-mainnet.public.blastapi.io/rpc/v0_7").unwrap(),
-    ));
     let mut now = timestamp();
     let delayed = now - update_index;
 
     if delayed > 300 {
         loop {
-            match provider
+            match searcher
+                .0
                 .get_nonce(BlockId::Tag(BlockTag::Latest), address)
                 .await
             {
                 Ok(new_nonce) => {
                     now = timestamp();
-                    println!("timestamp {:?}, nonce updated {:?}", now,new_nonce);
+                    println!("timestamp {:?}, nonce updated {:?}", now, new_nonce);
                     return (now, new_nonce);
                 }
                 Err(_e) => {
@@ -166,13 +163,10 @@ pub async fn update_nonce(
     }
 }
 
-pub async fn initialized_nonce(address: FieldElement) -> (u64, FieldElement) {
-    let provider = JsonRpcClient::new(HttpTransport::new(
-        Url::parse("https://starknet-mainnet.public.blastapi.io/rpc/v0_7").unwrap(),
-    ));
-
+pub async fn initialized_nonce(searcher: &Searcher, address: FieldElement) -> (u64, FieldElement) {
     loop {
-        match provider
+        match searcher
+            .0
             .get_nonce(BlockId::Tag(BlockTag::Latest), address)
             .await
         {

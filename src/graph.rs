@@ -1,12 +1,14 @@
 use std::collections::HashMap;
 
-use starknet::accounts::{Account, Call};
-use starknet::core::types::{FieldElement, InvokeTransactionResult};
-use starknet::macros::{felt, selector};
-
 use crate::types::*;
 use crate::utils::{timestamp, uniswapv2_getAmountOut, whether_profitable};
 use log::{info, warn};
+use starknet::accounts::AccountError;
+use starknet::accounts::AccountError::Provider;
+use starknet::accounts::{Account, Call, RawExecution};
+use starknet::core::types::{FieldElement, StarknetError};
+use starknet::macros::{felt, selector};
+use starknet::providers::ProviderError;
 
 pub fn task2(token0: Token, token1: Token, pairs: &Vec<Pair>) -> Vec<Pair> {
     let mut v: Vec<Pair> = vec![];
@@ -210,16 +212,32 @@ async fn executed_tx(
         &deadline,
     );
     assert!(back > amount_in);
-    let max_fee = *back - *amount_in;
-    let execution = account
+    let max_fee: FieldElement = *back - *amount_in;
+    let this_execution: starknet::accounts::Execution<
+        '_,
+        starknet::accounts::SingleOwnerAccount<
+            starknet::providers::JsonRpcClient<starknet::providers::jsonrpc::HttpTransport>,
+            starknet::signers::LocalWallet,
+        >,
+    > = account
         .execute(vec![call0, call1])
         .nonce(nonce)
-        .max_fee(max_fee)
-        .send()
-        .await;
+        .max_fee(max_fee);
 
-    match execution {
-        Ok(result) => println!("executed a tx {:?}", result.transaction_hash),
-        Err(e) => println!("trigger an {:?} error", e),
+    let prepared_execution = this_execution.prepared();
+
+    if let Ok(execution) = prepared_execution {
+        let tx_hash = execution.transaction_hash(false);
+        if Tx_pool.contains(&tx_hash) {
+            println!("the transaction was broadcasted");
+        } else {
+            let tx = execution.send().await;
+            println!("executed a new tx {:?}", tx);
+        }
     }
 }
+
+use once_cell::sync::Lazy;
+use std::sync::Arc;
+
+static Tx_pool: Lazy<Arc<Vec<FieldElement>>> = Lazy::new(|| Arc::new(Vec::with_capacity(1000)));
