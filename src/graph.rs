@@ -228,16 +228,19 @@ async fn executed_tx(
 
     if let Ok(execution) = prepared_execution {
         let tx_hash = execution.transaction_hash(false);
-        if Tx_pool.contains(&tx_hash) {
+
+        let r_tx = Tx_pool.read().unwrap();
+        if r_tx.contains(&tx_hash) {
             println!("the transaction was broadcasted");
         } else {
+            let mut w_tx = Tx_pool.write().unwrap();
+            w_tx.push(tx_hash);
             let tx = execution.send().await;
             println!("executed a new tx {:?}", tx);
         }
     }
 }
 
-use once_cell::sync::Lazy;
-use std::sync::Arc;
+use std::sync::RwLock;
 
-static Tx_pool: Lazy<Arc<Vec<FieldElement>>> = Lazy::new(|| Arc::new(Vec::with_capacity(1000)));
+static Tx_pool: RwLock<Vec<FieldElement>> = RwLock::new(Vec::new());
